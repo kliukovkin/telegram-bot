@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "babel-node --presets=env"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "config": "^3.0.1",
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}
