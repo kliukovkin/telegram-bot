@@ -1,4 +1,4 @@
-const Telegraf = require('telegraf');
+import Telegraf from 'telegraf';
 import config from 'config';
 
 const TOKEN = config.get('token');
