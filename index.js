@@ -3,14 +3,14 @@ import  Agent from 'socks5-https-client/lib/Agent';
 import config from 'config';
 
 const TOKEN = config.get('token');
-
+const proxy = config.get('proxy');
 const bot = new TelegramBot(TOKEN, {
     polling: true,
     request: {
         agentClass: Agent,
         agentOptions: {
-            socksHost: '103.206.97.70',
-            socksPort: 4145,
+            socksHost: proxy.host,
+            socksPort: proxy.port,
             // If authorization is needed:
             // socksUsername: process.env.PROXY_SOCKS5_USERNAME,
             // socksPassword: process.env.PROXY_SOCKS5_PASSWORD
