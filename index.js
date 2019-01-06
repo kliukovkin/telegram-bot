@@ -1,24 +1,20 @@
-import TelegramBot from 'node-telegram-bot-api';
-import  Agent from 'socks5-https-client/lib/Agent';
+import Telegraf from 'telegraf';
 import config from 'config';
+import HttpsProxyAgent from 'https-proxy-agent';
 
 const TOKEN = config.get('token');
 const proxy = config.get('proxy');
-const bot = new TelegramBot(TOKEN, {
-    polling: true,
-    request: {
-        agentClass: Agent,
-        agentOptions: {
-            socksHost: proxy.host,
-            socksPort: proxy.port,
-            // If authorization is needed:
-            // socksUsername: process.env.PROXY_SOCKS5_USERNAME,
-            // socksPassword: process.env.PROXY_SOCKS5_PASSWORD
-        }
-    }
+
+const bot = new Telegraf(TOKEN, {
+    telegram: {
+        agent: new HttpsProxyAgent({
+            host: proxy.host,
+            port: proxy.port
+        })
+    },
 });
 
-bot.on('message', (msg) => {
-    const {chat: {id}} = msg;
-    bot.sendMessage(id, 'Pong');
+bot.hears('hi', ctx => {
+    return ctx.reply('Hey!');
 });
+bot.startPolling();

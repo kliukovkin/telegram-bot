@@ -6,6 +6,9 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "config": "^3.0.1",
+    "https-proxy-agent": "^2.2.1",
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0",
     "node-telegram-bot-api": "^0.30.0",
     "socks5-https-client": "^1.2.1",
     "telegraf": "^3.25.5"
