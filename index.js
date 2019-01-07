@@ -33,8 +33,17 @@ bot.on('message', async ctx => {
         return ctx.reply(weather);
     }
     else {
+        if (ctx.message.text &&
+            (ctx.message.text[1] === 'е' ||
+                ctx.message.text[2] === 'е' ||
+                ctx.message.text[3] === 'е')) {
+            let {text} = ctx.message;
+            return ctx.reply('ху' + text.slice(text.indexOf('е')));
+        }
         return ctx.reply('Nothing to answer yet');
     }
 });
 
 bot.startPolling();
+//TODO what is webhooks?
+//TODO parse github profiles to calculate amount of code and repos
