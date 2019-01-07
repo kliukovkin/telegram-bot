@@ -17,30 +17,24 @@ const bot = new Telegraf(TOKEN, {
     },
 });
 
-
-bot.on('message', async ctx => {
-    if (ctx.message.text && ctx.message.text.includes('weather')) {
-        return ctx.reply('Special buttons keyboard', Extra.markup((markup) => {
-            return markup.resize()
-                .keyboard([
-                    markup.locationRequestButton('Send location')
-                ])
-        }))
-    }
-
-    if (ctx.message.location) {
-        const {latitude, longitude} = ctx.message.location;
-        const weather = await fetchWeather(latitude, longitude);
-        return ctx.reply(weather);
-    }
-    return ctx.reply('yo!')
-});
-bot.startPolling();
-bot.command('special', (ctx) => {
-    return ctx.reply('Special buttons keyboard', Extra.markup((markup) => {
+bot.start((ctx) => {
+    return ctx.reply('Get forecast', Extra.markup((markup) => {
         return markup.resize()
             .keyboard([
                 markup.locationRequestButton('Send location')
             ])
     }))
 });
+
+bot.on('message', async ctx => {
+    if (ctx.message.location) {
+        const {latitude, longitude} = ctx.message.location;
+        const weather = await fetchWeather(latitude, longitude);
+        return ctx.reply(weather);
+    }
+    else {
+        return ctx.reply('Nothing to answer yet');
+    }
+});
+
+bot.startPolling();
