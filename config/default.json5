@@ -3,5 +3,6 @@
   proxy: {
     host: '108.160.128.69',
     port: 3128
-  }
+  },
+  apiKey: '1606b26aa532cc0d87d5520cf6cfbb42' //openWeatherMap
 }
