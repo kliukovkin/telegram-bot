@@ -1,14 +1,12 @@
 import Telegraf from 'telegraf';
 import config from 'config';
 import HttpsProxyAgent from 'https-proxy-agent';
-import request from 'request';
+import Extra from 'telegraf/extra';
+import {fetchWeather} from './weather';
 
 const TOKEN = config.get('token');
 const PROXY = config.get('proxy');
-const APIKEY = config.get('apiKey');
-console.log(APIKEY);
-let city = 'portland';
-let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}`;
+
 
 const bot = new Telegraf(TOKEN, {
     telegram: {
@@ -18,15 +16,31 @@ const bot = new Telegraf(TOKEN, {
         })
     },
 });
-request(url, function (err, response, body) {
-    if(err){
-        console.log('error:', error);
-    } else {
-        console.log('body:', body);
-    }
-});
 
-bot.on('message', ctx => {
+
+bot.on('message', async ctx => {
+    if (ctx.message.text && ctx.message.text.includes('weather')) {
+        return ctx.reply('Special buttons keyboard', Extra.markup((markup) => {
+            return markup.resize()
+                .keyboard([
+                    markup.locationRequestButton('Send location')
+                ])
+        }))
+    }
+
+    if (ctx.message.location) {
+        const {latitude, longitude} = ctx.message.location;
+        const weather = await fetchWeather(latitude, longitude);
+        return ctx.reply(weather);
+    }
     return ctx.reply('yo!')
 });
 bot.startPolling();
+bot.command('special', (ctx) => {
+    return ctx.reply('Special buttons keyboard', Extra.markup((markup) => {
+        return markup.resize()
+            .keyboard([
+                markup.locationRequestButton('Send location')
+            ])
+    }))
+});

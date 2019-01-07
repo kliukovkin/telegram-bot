@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "babel-node --presets=env"
+    "start": "babel-node --presets=env index"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
